@@ -1,3 +1,3 @@
 # OpenAI Gym Problems
 
-This is a repository for my solutions to some OpenAI Gym problems.
+This repository contains solution attempts to some OpenAI Gym problems.
