@@ -51,7 +51,7 @@ class DQNAgent():
             Q_values[0][action] = Q_update
             self.model.fit(state, Q_values, verbose=0)
 
-        # Update exploration rate
+    def update_exploration_rate(self):
         self.exploration_rate *= EXPLORATION_DECAY
         self.exploration_rate = max(EXPLORATION_MIN, self.exploration_rate)
 
@@ -67,17 +67,17 @@ def cartpole():
     for episode in range(NUM_EPISODES):
         state = env.reset()
         state = np.expand_dims(state, axis=0)
-        while True:
+        done = False
+        while not done:
             #env.render()
             action = dqn_agent.select_action(state)
             state_next, reward, done, info = env.step(action)
             scores[episode] += reward
             state_next = np.expand_dims(state_next, axis=0)
             dqn_agent.remember(state, action, reward, state_next, done)
-            state = state_next
-            if done:
-                break
             dqn_agent.experience_replay()
+            dqn_agent.update_exploration_rate()
+            state = state_next
         print("Episode: {}, Score: {}".format(str(episode), str(scores[episode])))
 
     # Plot score
